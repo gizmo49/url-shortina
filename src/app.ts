@@ -14,7 +14,7 @@ const app = express();
 app.use(bodyParser.json());
 
 // Routes
-app.use('/api', urlRoutes);
+app.use('/api/v1', urlRoutes);
 
 // Error Middleware
 app.use(errorMiddleware);
