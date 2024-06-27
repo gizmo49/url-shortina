@@ -1,9 +1,20 @@
 import Redis from 'ioredis';
+const dotenv = require('dotenv');
+dotenv.config();  
 
 const redis = new Redis({
     host: process.env.REDIS_HOST,
     port: parseInt(process.env.REDIS_PORT || '6379'),
+    username: process.env.REDIS_USERNAME,
     password: process.env.REDIS_PASSWORD || undefined,
+});
+
+redis.on('connect', () => {
+    console.log('Connected to Redis');
+});
+
+redis.on('error', (err) => {
+    console.error('Redis connection error:', err);
 });
 
 export const cache = {

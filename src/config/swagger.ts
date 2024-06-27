@@ -1,27 +1,29 @@
-import swaggerJsdoc from 'swagger-jsdoc';
-import swaggerUi from 'swagger-ui-express';
-import { Express } from 'express';
+import { Application } from 'express';
+const swaggerJSDoc = require('swagger-jsdoc'); // Use require for swagger-jsdoc
+const swaggerUi = require('swagger-ui-express');
 
 const options = {
-    definition: {
-        openapi: '3.0.0',
-        info: {
-            title: 'URL Shortener API',
-            version: '1.0.0',
-            description: 'API documentation for the URL Shortener service',
-        },
-        servers: [
-            {
-                url: 'http://localhost:3000',
-            },
-        ],
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'URL Shortener API',
+      version: '1.0.0',
+      description: 'A simple URL shortener API',
     },
-    apis: ['./src/routes/*.ts', './src/dtos/*.ts'],
+    servers: [
+      {
+        url: 'http://localhost:3000/api',
+        description: 'Development server',
+      },
+    ],
+  },
+  apis: ['./src/controllers/*.ts', './src/dtos/*.ts'], // Path to the API docs
 };
 
-const specs = swaggerJsdoc(options);
+const swaggerSpec = swaggerJSDoc(options);
 
-export const swaggerDocs = (app: Express, port: number) => {
-    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
-    console.log(`Swagger docs available at http://localhost:${port}/api-docs`);
+const setupSwagger = (app: Application) => {
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 };
+
+export default setupSwagger;

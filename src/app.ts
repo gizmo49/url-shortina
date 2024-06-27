@@ -1,14 +1,16 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
+import { Application } from 'express';
 import urlRoutes from './routes/urlRoutes';
 import { errorMiddleware } from './middlewares/errorMiddleware';
-import { swaggerDocs } from './config/swagger';
+import setupSwagger from './config/swagger';
+import mongoose from 'mongoose';
+
+const express = require('express');
+const bodyParser = require('body-parser');
+const dotenv = require('dotenv'); // Use require instead of import
 
 dotenv.config();
 
-const app = express();
+const app: Application = express();
 
 // Middleware
 app.use(bodyParser.json());
@@ -16,10 +18,11 @@ app.use(bodyParser.json());
 // Routes
 app.use('/api/v1', urlRoutes);
 
+setupSwagger(app);
+
 // Error Middleware
 app.use(errorMiddleware);
 
-const PORT = Number(process.env.PORT || 3000);
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/url-shortener';
 
 // Connect to MongoDB
@@ -29,7 +32,6 @@ mongoose.connect(MONGO_URI).then(() => {
     console.error('MongoDB connection error:', error);
 });
 
-// Swagger Documentation
-swaggerDocs(app, PORT);
+
 
 export default app;
