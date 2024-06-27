@@ -1,0 +1,36 @@
+# Node.js
+node_modules/
+dist/
+build/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+
+# Typescript
+*.tsbuildinfo
+
+# Debugging and IDE files
+.vscode/
+.idea/
+.DS_Store
+
+# Jest
+coverage/
+
+# Swagger
+.swagger-cache/
+.swagger-stats/
+
+# Others
+*.swp
+*.swo
+*.bak
+*.tmp
+*.temp
