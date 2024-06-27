@@ -1,23 +1,22 @@
-import { Document, Model } from 'mongoose';
-import Url, { IUrl } from '../models/urlModel.ts';
+import { Model } from 'mongoose';
+import UrlModel, { IUrl } from '../models/urlModel';
 
 export class UrlRepository {
-    private urlModel: Model<IUrl>;
+  private model: Model<IUrl>;
 
-    constructor() {
-        this.urlModel = Url;
-    }
+  constructor() {
+    this.model = UrlModel;
+  }
 
-    public async create(urlData: any): Promise<Document> {
-        const url = new this.urlModel(urlData);
-        return url.save();
-    }
+  public async findByShortUrl(shortUrl: string): Promise<IUrl | null> {
+    return this.model.findOne({ shortUrl }).exec();
+  }
 
-    public async findByShortUrl(shortUrl: string): Promise<Document | null> {
-        return this.urlModel.findOne({ shortUrl });
-    }
+  public async save(url: IUrl): Promise<IUrl> {
+    return this.model.create(url);
+  }
 
-    public async incrementHits(shortUrl: string): Promise<void> {
-        await this.urlModel.updateOne({ shortUrl }, { $inc: { hits: 1 } });
-    }
+  public async incrementHits(shortUrl: string): Promise<void> {
+    await this.model.updateOne({ shortUrl }, { $inc: { hits: 1 } }).exec();
+  }
 }
