@@ -12,6 +12,16 @@ dotenv.config();
 
 const app: Application = express();
 
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/url-shortener';
+
+// Connect to MongoDB
+mongoose.connect(MONGO_URI).then(() => {
+    console.log('Connected to MongoDB');
+}).catch((error) => {
+    console.error('MongoDB connection error:', error);
+});
+
+
 // Middleware
 app.use(bodyParser.json());
 
@@ -23,14 +33,6 @@ setupSwagger(app);
 // Error Middleware
 app.use(errorMiddleware);
 
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/url-shortener';
-
-// Connect to MongoDB
-mongoose.connect(MONGO_URI).then(() => {
-    console.log('Connected to MongoDB');
-}).catch((error) => {
-    console.error('MongoDB connection error:', error);
-});
 
 
 

@@ -1,35 +1,28 @@
-import Redis from 'ioredis';
+import * as NodeCache from 'node-cache';
 const dotenv = require('dotenv');
-dotenv.config();  
+dotenv.config();
 
-const redis = new Redis({
-    host: process.env.REDIS_HOST,
-    port: parseInt(process.env.REDIS_PORT || '6379'),
-    username: process.env.REDIS_USERNAME,
-    password: process.env.REDIS_PASSWORD || undefined,
-});
-
-redis.on('connect', () => {
-    console.log('Connected to Redis');
-});
-
-redis.on('error', (err) => {
-    console.error('Redis connection error:', err);
+// Initialize NodeCache instance
+const cacheService = new NodeCache({
+    stdTTL: parseInt(process.env.CACHE_TTL || '3600'), // Cache TTL in seconds (default: 1 hour)
+    checkperiod: 120, // How often to check and delete expired keys (default: 120 seconds)
+    useClones: false, // Disable cloning of cached values (if necessary)
 });
 
 export const cache = {
-    get: async (key: string): Promise<string | null> => {
-        const value = await redis.get(key);
-        return value;
+    get: async (key: string): Promise<string | undefined> => {
+        return cacheService.get<string>(key);
     },
+
     set: async (key: string, value: string, ttl?: number): Promise<void> => {
         if (ttl) {
-            await redis.set(key, value, 'EX', ttl);
+            cacheService.set(key, value, ttl);
         } else {
-            await redis.set(key, value);
+            cacheService.set(key, value);
         }
     },
+
     del: async (key: string): Promise<void> => {
-        await redis.del(key);
+        cacheService.del(key);
     },
 };

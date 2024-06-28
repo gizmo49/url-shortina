@@ -6,6 +6,7 @@ import { IUrl } from '../models/urlModel';
 
 export class UrlService {
     private urlRepository: UrlRepository;
+    private baseUrl: string = process.env.BASE_URL || 'http://localhost:3000'; // Default base URL
 
     constructor() {
         this.urlRepository = new UrlRepository();
@@ -14,12 +15,22 @@ export class UrlService {
     public async encodeUrl(dto: EncodeUrlDto): Promise<string> {
         const { originalUrl } = dto;
 
+        // Check if the URL already exists in cache
+        let cachedShortUrl = await cache.get(originalUrl);
+        if (cachedShortUrl) {
+            return `${this.baseUrl}/${cachedShortUrl}`;
+        }
+
         // Generate short URL (simplified example, you'd want to use a real algorithm)
         const shortUrl = Math.random().toString(36).substring(2, 8);
 
         // Save to database
         const urlDoc = await this.urlRepository.save({ originalUrl, shortUrl, hits: 0 } as IUrl);
-        return urlDoc.shortUrl;
+
+        // Cache the short URL in Redis
+        await cache.set(originalUrl, urlDoc.shortUrl, 3600); // Cache for 1 hour
+
+        return `${this.baseUrl}/${urlDoc.shortUrl}`;
     }
 
     public async decodeUrl(dto: DecodeUrlDto): Promise<string> {
@@ -48,7 +59,7 @@ export class UrlService {
 
         return {
             originalUrl: urlDoc.originalUrl,
-            shortUrl: urlDoc.shortUrl,
+            shortUrl: `${this.baseUrl}/${urlDoc.shortUrl}`, // Include base URL in shortUrl
             hits: urlDoc.hits,
         };
     }
