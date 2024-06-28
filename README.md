@@ -61,7 +61,7 @@ This is a URL shortening service built with Node.js, TypeScript, and Express. It
 
 ## Contributing
 
-Feel free to open issues or submit pull requests for improvements and bug fixes.
+Feel free to open issues or submit pull requests for iomplmprovements and bug fixes.
 
 ## License
 
