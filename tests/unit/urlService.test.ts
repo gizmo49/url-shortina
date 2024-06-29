@@ -21,7 +21,7 @@ describe('UrlService', () => {
         urlService = new UrlService();
         // Injecting mocked repository
         (urlService as any).urlRepository = urlRepositoryMock;
-        (urlService as any).baseUrl = 'http://localhost:3000';
+        (urlService as any).baseUrl = `${process.env.BASE_URL}`;
     });
 
     afterEach(() => {
@@ -38,7 +38,7 @@ describe('UrlService', () => {
             const dto: EncodeUrlDto = { originalUrl };
             const result = await urlService.encodeUrl(dto);
 
-            expect(result).toBe(`http://localhost:3000/${cachedShortUrl}`);
+            expect(result).toBe(`${process.env.BASE_URL}/${cachedShortUrl}`);
             expect(cacheMock.get).toHaveBeenCalledWith(originalUrl);
             expect(urlRepositoryMock.save).not.toHaveBeenCalled();
         });
@@ -55,7 +55,7 @@ describe('UrlService', () => {
             const dto: EncodeUrlDto = { originalUrl };
             const result = await urlService.encodeUrl(dto);
 
-            expect(result).toBe(`http://localhost:3000/${shortUrl}`);
+            expect(result).toBe(`${process.env.BASE_URL}/${shortUrl}`);
             expect(cacheMock.get).toHaveBeenCalledWith(originalUrl);
             expect(urlRepositoryMock.save).toHaveBeenCalledWith({ originalUrl, shortUrl, hits: 0 });
             expect(cacheMock.set).toHaveBeenCalledWith(originalUrl, shortUrl, 3600);
@@ -139,7 +139,7 @@ describe('UrlService', () => {
 
             expect(result).toEqual({
                 originalUrl,
-                shortUrl: `http://localhost:3000/${shortUrl}`,
+                shortUrl: `${process.env.BASE_URL}/${shortUrl}`,
                 hits,
             });
             expect(urlRepositoryMock.findByShortUrl).toHaveBeenCalledWith(shortUrl);
