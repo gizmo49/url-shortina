@@ -3,6 +3,8 @@ import urlRoutes from './routes/urlRoutes';
 import { errorMiddleware } from './middlewares/errorMiddleware';
 import setupSwagger from './config/swagger';
 import mongoose from 'mongoose';
+const cors = require('cors')
+
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -21,6 +23,7 @@ mongoose.connect(MONGO_URI).then(() => {
     console.error('MongoDB connection error:', error);
 });
 
+app.use(cors())
 
 // Middleware
 app.use(bodyParser.json());
