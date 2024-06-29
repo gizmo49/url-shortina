@@ -17,8 +17,7 @@
         "ioredis": "^4.27.6",
         "joi": "^17.13.3",
         "mongoose": "^8.4.4",
-        "nanoid": "^5.0.7",
-        "node-cache": "^5.1.2",
+        "node-cache": "^3.2.1",
         "swagger-jsdoc": "^6.0.0",
         "swagger-ui-express": "^4.1.6"
     },
@@ -26,7 +25,6 @@
         "@types/body-parser": "^1.19.0",
         "@types/express": "^4.17.13",
         "@types/jest": "^29.5.12",
-        "@types/lru-cache": "^7.10.10",
         "@types/mongoose": "^5.11.97",
         "@types/node": "^16.11.7",
         "@typescript-eslint/eslint-plugin": "^5.0.0",

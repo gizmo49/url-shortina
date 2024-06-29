@@ -11,7 +11,7 @@ const cacheService = new NodeCache({
 
 export const cache = {
     get: async (key: string): Promise<string | undefined> => {
-        return cacheService.get<string>(key);
+        return cacheService.get(key);
     },
 
     set: async (key: string, value: string, ttl?: number): Promise<void> => {
