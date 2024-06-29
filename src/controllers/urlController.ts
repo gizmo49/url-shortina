@@ -99,9 +99,14 @@ export class UrlController {
             await validate(dto, encodeUrlSchema);
             const shortUrl = await this.urlService.encodeUrl(dto);
             res.status(201).json({ shortUrl });
-        } catch (error) {
-            res.status(400).json({ error: error.message });
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                res.status(400).json({ error: error.message });
+            } else {
+                res.status(400).json({ error: 'An error occurred' });
+            }
         }
+
     }
 
     private async decodeUrl(req: Request, res: Response): Promise<void> {
@@ -110,9 +115,14 @@ export class UrlController {
             await validate(dto, decodeUrlSchema);
             const originalUrl = await this.urlService.decodeUrl(dto);
             res.status(200).json({ originalUrl });
-        } catch (error) {
-            res.status(400).json({ error: error.message });
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                res.status(400).json({ error: error.message });
+            } else {
+                res.status(400).json({ error: 'An error occurred' });
+            }
         }
+
     }
 
     private async getUrlStatistics(req: Request, res: Response): Promise<void> {
@@ -120,8 +130,13 @@ export class UrlController {
             const { urlPath } = req.params;
             const stats = await this.urlService.getUrlStatistics(urlPath);
             res.status(200).json(stats);
-        } catch (error) {
-            res.status(400).json({ error: error.message });
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                res.status(400).json({ error: error.message });
+            } else {
+                res.status(400).json({ error: 'An error occurred' });
+            }
         }
+
     }
 }
