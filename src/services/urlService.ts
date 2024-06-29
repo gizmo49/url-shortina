@@ -1,8 +1,9 @@
 import { UrlRepository } from '../repositories/urlRepository';
 import { EncodeUrlDto } from '../dtos/encodeUrlDto';
 import { DecodeUrlDto } from '../dtos/decodeUrlDto';
-import { cache } from '../utils/cache';
 import { IUrl } from '../models/urlModel';
+
+const { cache } = require('../utils/cache.js'); 
 
 export class UrlService {
     private urlRepository: UrlRepository;
@@ -11,7 +12,6 @@ export class UrlService {
     constructor() {
         this.urlRepository = new UrlRepository();
     }
-
 
     private generateShortUrl(): string {
         return Math.random().toString(36).substring(2, 8);

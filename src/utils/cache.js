@@ -1,4 +1,4 @@
-import * as NodeCache from 'node-cache';
+const NodeCache = require('node-cache');
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -9,12 +9,12 @@ const cacheService = new NodeCache({
     useClones: false, // Disable cloning of cached values (if necessary)
 });
 
-export const cache = {
-    get: async (key: string): Promise<string | undefined> => {
+module.exports.cache = {
+    get: async (key) => {
         return cacheService.get(key);
     },
 
-    set: async (key: string, value: string, ttl?: number): Promise<void> => {
+    set: async (key, value, ttl) => {
         if (ttl) {
             cacheService.set(key, value, ttl);
         } else {
@@ -22,7 +22,7 @@ export const cache = {
         }
     },
 
-    del: async (key: string): Promise<void> => {
+    del: async (key) => {
         cacheService.del(key);
     },
 };

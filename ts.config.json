@@ -1,11 +1,14 @@
 {
     "compilerOptions": {
+      "allowJs": true,
+      "declaration": false,
       "target": "ES6",
       "module": "commonjs",
       "outDir": "./dist",
       "rootDir": "./src",
       "strict": true,
       "esModuleInterop": true,
+      "allowSyntheticDefaultImports": true,
       "skipLibCheck": true,
       "forceConsistentCasingInFileNames": true,
       "noImplicitAny": false,
