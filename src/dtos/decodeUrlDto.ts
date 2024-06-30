@@ -11,7 +11,7 @@
  *           type: string
  *           description: The shortened URL to be decoded
  *       example:
- *         shortUrl: http://short.ly/abcd12
+ *         shortUrl: abcd12
  */
 export interface DecodeUrlDto {
     shortUrl: string;
